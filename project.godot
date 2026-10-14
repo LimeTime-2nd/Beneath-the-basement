@@ -15,6 +15,11 @@ run/main_scene="uid://bkorfwpwtp7dg"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://assets/icon.svg"
 
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
 [input]
 
 jump={
@@ -49,3 +54,4 @@ click={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+environment/defaults/default_clear_color=Color(0.46674538, 0.54302764, 0.7637612, 1)

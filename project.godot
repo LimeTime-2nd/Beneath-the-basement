@@ -17,7 +17,7 @@ config/icon="res://assets/icon.svg"
 
 [display]
 
-window/stretch/mode="viewport"
+window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
 [input]
@@ -56,4 +56,4 @@ click={
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-environment/defaults/default_clear_color=Color(0.46674538, 0.54302764, 0.7637612, 1)
+environment/defaults/default_clear_color=Color(0.14047405, 0.09094172, 0.039420042, 1)

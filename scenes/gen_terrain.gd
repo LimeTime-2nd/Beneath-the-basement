@@ -1,67 +1,82 @@
 extends Node
 
-@export var coal_noise_node: NoiseTexture2D
-@export var iron_noise_node: NoiseTexture2D
-@export var layer0to1_noise_node: NoiseTexture2D
-@export var layer1_noise_node: NoiseTexture2D
-@export var layer1to2_noise_node: NoiseTexture2D
-@export var layer2_noise_node: NoiseTexture2D
-
 @onready var terrain: TileMapLayer = %Terrain
 @onready var black: TileMapLayer = %Black
-
-var coalNoise: Noise
-var ironNoise: Noise
-var layer0to1Noise: Noise
-var layer1Noise: Noise
-var layer1to2Noise: Noise
-var layer2Noise: Noise
-
 # around -0.15 to -0.9
+
+# dirt color environment -> 24170a	
 var source_id: int = 0
 
 var atlas: Dictionary = {
-	"dirtBlock" = Vector2i(0,0),
-	"sandstoneBlock" = Vector2i(1,0),
-	"sandstoneBlockLCoal" = Vector2i(2,0),
-	"sandstoneBlockHCoal" = Vector2i(3,0),
-	"shaleBlock" = Vector2i(4,0),
-	"limestoneBlock" = Vector2i(5,0),
-	"limestoneBlockLCoal" = Vector2i(6,0),
-	"limestoneBlockHCoal" = Vector2i(7,0),
-	"basaltBlock" = Vector2i(8,0),
-	"basaltBlockLCoal" = Vector2i(9,0),
-	"basaltBlockLIron" = Vector2i(10,0),
-	"basaltBlockHIron" = Vector2i(11,0),
-	"slateBlock" = Vector2i(12,0),
-	"slateBlockLIron" = Vector2i(13,0),
-	"slateBlockHIron" = Vector2i(14,0),
-	"slateBlockLGold" = Vector2i(15,0),
-	"slateBlockHGold" = Vector2i(16,0),
-	"graniteBlock" = Vector2i(17,0),
+	"dirt" = Vector2i(0,0),
+	"barrier" = Vector2i(8,0),
+	"clay" = Vector2i(0,1),
+	"clayLCopper" = Vector2i(1,1),
+	"sandstone" = Vector2i(0,2),
+	"sandstoneLCopper" = Vector2i(1,2),
+	"sandstoneHCopper" = Vector2i(2,2),
+	"sandstoneLTin" = Vector2i(3,2),
+	"sandstoneLCoal" = Vector2i(4,2),
+	"sandstoneHCoal" = Vector2i(5,2),
+	"shale" = Vector2i(0,3),
+	"shaleLCopper" = Vector2i(1,3),
+	"shaleLCoal" = Vector2i(2,3),
+	"shaleHCoal" = Vector2i(3,3),
+	"shaleLZinc" = Vector2i(4,3),
+	"shaleHZinc" = Vector2i(5,3),
+	"shaleLSilver" = Vector2i(6,3),
+	"limestone" = Vector2i(0,4),
+	"limestoneLCopper" = Vector2i(1,4),
+	"limestoneHCopper" = Vector2i(2,4),
+	"limestoneLZinc" = Vector2i(3,4),
+	"limestoneHZinc" = Vector2i(4,4),
+	"limestoneLSilver" = Vector2i(5,4),
+	"basalt" = Vector2i(0,5),
+	"basaltLCopper" = Vector2i(1,5),
+	"basaltHCopper" = Vector2i(2,5),
+	"basaltLIron" = Vector2i(3,5),
+	"basaltHIron" = Vector2i(4,5),
+	"basaltLZinc" = Vector2i(5,5),
+	"basaltLTitanium" = Vector2i(6,5),
+	"basaltLSilver" = Vector2i(7,5),
+	"basaltHSilver" = Vector2i(8,5),
+	"granite" = Vector2i(0,6),
+	"graniteLTin" = Vector2i(1,6),
+	"graniteHTin" = Vector2i(2,6),
+	"graniteLIron" = Vector2i(3,6),
+	"graniteLSilver" = Vector2i(4,6),
+	"graniteHSilver" = Vector2i(5,6),
 }
+
+
+@export var heat_noise_node: NoiseTexture2D
+@export var pressure_noise_node: NoiseTexture2D
+@export var moisture_noise_node: NoiseTexture2D
+@export var transition_noise_node: NoiseTexture2D
+@export var additional_noise_node: NoiseTexture2D
+
+var heatNoise : Noise
+var pressureNoise : Noise
+var moistureNoise : Noise
+var transitionNoise : Noise
+var additionalNoise : Noise
 
 func _ready() -> void:
 	
 	var test: Array
-	coalNoise = coal_noise_node.noise
-	coalNoise.seed = randi_range(0,1000)
-	ironNoise = iron_noise_node.noise
-	ironNoise.seed = randi_range(0,1000)
-	layer0to1Noise = layer0to1_noise_node.noise
-	layer0to1Noise.seed = randi_range(0,1000)
-	layer1Noise = layer1_noise_node.noise
-	layer1Noise.seed = randi_range(0,1000)
-	layer1to2Noise = layer1to2_noise_node.noise
-	layer1to2Noise.seed = randi_range(0,1000)
-	layer2Noise = layer2_noise_node.noise
-	layer2Noise.seed = randi_range(0,1000)
-
-	create_layer(0,"layer0to1")
-	create_layer(1,"layer1")
-	create_layer(2,"layer1to2")
-	create_layer(3,"layer2")
-	create_layer(4,"layer2")
+	
+	heatNoise = heat_noise_node.noise
+	heatNoise.seed = randi_range(0,5000)
+	pressureNoise = pressure_noise_node.noise
+	pressureNoise.seed = randi_range(0,5000)
+	moistureNoise = moisture_noise_node.noise
+	moistureNoise.seed = randi_range(0,5000)
+	transitionNoise = transition_noise_node.noise
+	transitionNoise.seed = randi_range(0,5000)
+	additionalNoise = additional_noise_node.noise
+	additionalNoise.seed = randi_range(0,5000)
+	
+	create_layer(["layer0to1","layer1","layer1to2","layer2","layer2","layer2","layer2","layer2","layer2","layer2","layer2","layer2","layer2","layer2","layer2","layer2","layer2","layer2","layer2"])
 	
 	#var noise_value: float
 	#for x in range(-100,101):
@@ -79,11 +94,11 @@ func create_chunk(coordx: int, coordy: int, type: String):
 	if type == "layer0to1":
 		for x in range(16):
 			for y in range(16):
-				noise_value = layer0to1Noise.get_noise_2d(x+offset.x,y+offset.y)
+				noise_value = transitionNoise.get_noise_2d(x+offset.x,y+offset.y)
 				if noise_value > (-0.15 - y / 21.0):
 					layer1_gen(Vector2i(x,y)+offset)
 				else:
-					terrain.set_cell(Vector2i(x,y)+offset,source_id,atlas["dirtBlock"])
+					layer0_gen(Vector2i(x,y)+offset)
 	if type == "layer1":
 		for x in range(16):
 			for y in range(16):
@@ -91,7 +106,7 @@ func create_chunk(coordx: int, coordy: int, type: String):
 	if type == "layer1to2":
 		for x in range(16):
 			for y in range(16):
-				noise_value = layer1to2Noise.get_noise_2d(x+offset.x,y+offset.y)
+				noise_value = transitionNoise.get_noise_2d(x+offset.x,y+offset.y)
 				if noise_value > (-0.15 - y / 21.0):
 					layer2_gen(Vector2i(x,y)+offset)
 				else:
@@ -101,44 +116,63 @@ func create_chunk(coordx: int, coordy: int, type: String):
 			for y in range(16):
 				layer2_gen(Vector2i(x,y)+offset)
 
-func create_layer(coordy: int, type: String):
-	for x in range(-5,5):
-		create_chunk(x,coordy,type)
+func create_layer(layers: Array):
+	var y: int = 0
+	for type in layers:
+		for x in range(-10,10):
+			create_chunk(x,y,type)
+		y += 1
 		
-func layer1_gen(blockPosition: Vector2i):
-	var noise_value = layer1Noise.get_noise_2d(blockPosition.x,blockPosition.y)
-	if noise_value > -0.45:
-		noise_value = coalNoise.get_noise_2d(blockPosition.x,blockPosition.y)
-		if noise_value > -0.35:
-			terrain.set_cell(blockPosition,source_id,atlas["limestoneBlockHCoal"])
-		elif noise_value > -0.4:
-			terrain.set_cell(blockPosition,source_id,atlas["limestoneBlockLCoal"])
+func layer0_gen(blockPosition: Vector2i):
+	var noise_value = moistureNoise.get_noise_2d(blockPosition.x,blockPosition.y*5)
+	if noise_value > -0.55:
+		noise_value = heatNoise.get_noise_2d(blockPosition.x*6,blockPosition.y*6)
+		if noise_value > -0.6:
+			terrain.set_cell(blockPosition,source_id,atlas["dirt"])
 		else:
-			terrain.set_cell(blockPosition,source_id,atlas["limestoneBlock"])
-	elif noise_value > -0.6:
-		terrain.set_cell(blockPosition,source_id,atlas["shaleBlock"])
+			noise_value = moistureNoise.get_noise_2d(blockPosition.x*6,blockPosition.y*6)
+			if noise_value > -0.4:
+				terrain.set_cell(blockPosition,source_id,atlas["clayLCopper"])
+			else:
+				terrain.set_cell(blockPosition,source_id,atlas["clay"])
 	else:
-		noise_value = coalNoise.get_noise_2d(blockPosition.x,blockPosition.y)
-		if noise_value > -0.35:
-			terrain.set_cell(blockPosition,source_id,atlas["sandstoneBlockHCoal"])
-		elif noise_value > -0.4:
-			terrain.set_cell(blockPosition,source_id,atlas["sandstoneBlockLCoal"])
+		terrain.set_cell(blockPosition,source_id,atlas["dirt"])
+
+func layer1_gen(blockPosition: Vector2i):
+	var noise_value = moistureNoise.get_noise_2d(blockPosition.x*0.8,blockPosition.y*13)
+	if noise_value > -0.49:
+		terrain.set_cell(blockPosition,source_id,atlas["limestone"])
+	elif noise_value > -0.6:
+		terrain.set_cell(blockPosition,source_id,atlas["shale"])
+	elif noise_value > -0.63:
+		noise_value = pressureNoise.get_noise_2d(blockPosition.x*6,blockPosition.y*6)
+		if noise_value > -0.38:
+			terrain.set_cell(blockPosition,source_id,atlas["sandstoneHCopper"])
+		elif noise_value > -0.5:
+			terrain.set_cell(blockPosition,source_id,atlas["sandstoneLCopper"])
 		else:
-			terrain.set_cell(blockPosition,source_id,atlas["sandstoneBlock"])
+			terrain.set_cell(blockPosition,source_id,atlas["sandstone"])
+	else:
+		noise_value = heatNoise.get_noise_2d(blockPosition.x*4,blockPosition.y*4)
+		if noise_value > -0.4:
+			terrain.set_cell(blockPosition,source_id,atlas["sandstoneHCoal"])
+		elif noise_value > -0.43:
+			terrain.set_cell(blockPosition,source_id,atlas["sandstoneLCoal"])
+		else:
+			terrain.set_cell(blockPosition,source_id,atlas["sandstone"])
+		
 			
 func layer2_gen(blockPosition: Vector2i):
-	var noise_value = layer2Noise.get_noise_2d(blockPosition.x,blockPosition.y)
-	if noise_value < 0.3:
-		noise_value = coalNoise.get_noise_2d(blockPosition.x,blockPosition.y)
-		if noise_value > -0.32:
-			terrain.set_cell(blockPosition,source_id,atlas["basaltBlockLCoal"])
+	var noise_value = additionalNoise.get_noise_2d(blockPosition.x,blockPosition.y)
+	if noise_value < 0.5:
+		noise_value = heatNoise.get_noise_2d(blockPosition.x*6,blockPosition.y*10)
+		if noise_value > -0.55:
+			# basalt
+			terrain.set_cell(blockPosition,source_id,atlas["basalt"])
+			
 		else:
-			terrain.set_cell(blockPosition,source_id,atlas["basaltBlock"])
-		noise_value = ironNoise.get_noise_2d(blockPosition.x,blockPosition.y)
-		if noise_value > -0.3:
-			terrain.set_cell(blockPosition,source_id,atlas["basaltBlockHIron"])
-		elif noise_value > -0.35:
-			terrain.set_cell(blockPosition,source_id,atlas["basaltBlockLIron"])
+			terrain.set_cell(blockPosition,source_id,atlas["granite"])
+		# granite
 		#black.erase_cell(blockPosition)
 		#black.erase_cell(blockPosition + Vector2i(0,1))
 		#black.erase_cell(blockPosition + Vector2i(1,1))

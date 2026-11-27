@@ -50,10 +50,11 @@ click={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+2d/default_gravity=800.0
 
 [rendering]
 
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-environment/defaults/default_clear_color=Color(0.14047405, 0.09094172, 0.039420042, 1)
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

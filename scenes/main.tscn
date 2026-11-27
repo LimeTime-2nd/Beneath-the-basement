@@ -4,46 +4,11 @@
 [ext_resource type="Script" uid="uid://bcht6l3ge8wk4" path="res://scenes/gen_terrain.gd" id="2_jyhfs"]
 [ext_resource type="Texture2D" uid="uid://dsecvqod0tq3h" path="res://assets/terrain btb.png" id="2_sugp2"]
 [ext_resource type="Script" uid="uid://cfyqqaim7l2f" path="res://scenes/tile_map_layer.gd" id="3_sugp2"]
+[ext_resource type="Texture2D" uid="uid://bp1538mihj1xm" path="res://resources/condition_noise.tres" id="4_tipki"]
+[ext_resource type="Texture2D" uid="uid://b461xsnevukx3" path="res://resources/cave_noise.tres" id="5_85g3d"]
 [ext_resource type="Texture2D" uid="uid://xwjwdh54elnp" path="res://assets/black btb.png" id="5_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://bvxl8n7s610ds" path="res://assets/BreakingTexture.png" id="6_o6xl0"]
 [ext_resource type="Script" uid="uid://en2uufx7aiq2" path="res://scenes/ray_cast_2d.gd" id="6_tefeu"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_o6xl0"]
-noise_type = 2
-frequency = 0.03
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tipki"]
-noise = SubResource("FastNoiseLite_o6xl0")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_85g3d"]
-noise_type = 2
-frequency = 0.03
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_choun"]
-noise = SubResource("FastNoiseLite_85g3d")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_jkv2x"]
-noise_type = 2
-frequency = 0.03
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jbj1t"]
-noise = SubResource("FastNoiseLite_jkv2x")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_muem4"]
-noise_type = 2
-frequency = 0.03
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dp3eg"]
-noise = SubResource("FastNoiseLite_muem4")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ya4ey"]
-frequency = 0.0137
-fractal_type = 2
-fractal_octaves = 2
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eb6dy"]
-generate_mipmaps = false
-noise = SubResource("FastNoiseLite_ya4ey")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jyhfs"]
 texture = ExtResource("2_sugp2")
@@ -165,11 +130,11 @@ script = ExtResource("6_tefeu")
 
 [node name="GenTerrain" type="Node" parent="." unique_id=290337621]
 script = ExtResource("2_jyhfs")
-heat_noise_node = SubResource("NoiseTexture2D_tipki")
-pressure_noise_node = SubResource("NoiseTexture2D_choun")
-moisture_noise_node = SubResource("NoiseTexture2D_jbj1t")
-transition_noise_node = SubResource("NoiseTexture2D_dp3eg")
-additional_noise_node = SubResource("NoiseTexture2D_eb6dy")
+heat_noise_node = ExtResource("4_tipki")
+pressure_noise_node = ExtResource("4_tipki")
+moisture_noise_node = ExtResource("4_tipki")
+transition_noise_node = ExtResource("4_tipki")
+additional_noise_node = ExtResource("5_85g3d")
 
 [node name="Terrain" type="TileMapLayer" parent="GenTerrain" unique_id=1962436710]
 unique_name_in_owner = true
